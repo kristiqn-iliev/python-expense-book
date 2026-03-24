@@ -9,7 +9,7 @@ from app.api.dependencies import (
     get_expense_service,
 )
 from app.repositories.expense_repository import ExpenseRepository
-from app.schemas.expense import ExpenseCreate, ExpenseRead
+from app.schemas.expense import ExpenseCreate, ExpenseRead, ExpenseUpdate
 from app.services.expense_service import ExpenseService
 
 router = APIRouter(prefix="/expenses", tags=["expenses"])
@@ -43,3 +43,11 @@ def delete_expense(
     service: ExpenseServiceDependency,
 ) -> None:
     service.delete_expense(expense_id)
+
+@router.patch("/{expense_id}", response_model=ExpenseRead, status_code=status.HTTP_200_OK)
+def edit_expense(
+    expense_id: int,
+    payload: ExpenseUpdate,
+    service: ExpenseServiceDependency,
+) -> ExpenseRead:
+    return service.edit_expense(expense_id, payload)

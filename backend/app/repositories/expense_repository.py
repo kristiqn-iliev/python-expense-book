@@ -1,5 +1,8 @@
+from typing import Optional
+
 from app.models.expense import Expense
 from app.schemas.expense import ExpenseCreate
+from app.schemas.expense import ExpenseUpdate
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -19,10 +22,20 @@ class ExpenseRepository:
         statement = select(Expense).order_by(Expense.created_at.desc(), Expense.id.desc())
         return list(self.db.scalars(statement).all())
     
-    def get_by_id(self, expense_id : int) -> Expense | None:
+    def get_by_id(self, expense_id : int) -> Optional[Expense]:
         expense = self.db.query(Expense).filter(Expense.id == expense_id).first()
         return expense
     
     def delete(self, expense : Expense) -> None:
         self.db.delete(expense)
         self.db.commit()
+
+    def edit(self, expense: Expense, payload: ExpenseUpdate) -> Expense:
+        update_data = payload.model_dump(exclude_unset=True)
+
+        for field, value in update_data.items():
+            setattr(expense,field,value)
+            
+        self.db.commit()
+        self.db.refresh(expense)
+        return expense

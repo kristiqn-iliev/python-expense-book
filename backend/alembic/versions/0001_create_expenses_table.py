@@ -1,14 +1,15 @@
 """create expenses table"""
 
 from collections.abc import Sequence
+from typing import Optional
 
 from alembic import op
 import sqlalchemy as sa
 
 revision: str = "0001_create_expenses_table"
-down_revision: str | None = None
-branch_labels: Sequence[str] | None = None
-depends_on: Sequence[str] | None = None
+down_revision: Optional[str] = None
+branch_labels: Optional[Sequence[str]] = None
+depends_on: Optional[Sequence[str]] = None
 
 
 def upgrade() -> None:
