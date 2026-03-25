@@ -9,6 +9,13 @@ interface ExpenseFormProps {
 export function ExpenseForm({ onSubmit }: ExpenseFormProps) {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
+  const [purchaseDate, setPurchaseDate] = useState(() =>
+    new Date().toISOString().slice(0, 10),
+  );
+  const [category, setCategory] = useState("");
+  const [merchant, setMerchant] = useState("");
+  const [notes, setNotes] = useState("");
+  const [isRecurring, setIsRecurring] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -16,9 +23,22 @@ export function ExpenseForm({ onSubmit }: ExpenseFormProps) {
     setIsSubmitting(true);
 
     try {
-      await onSubmit({ title, amount });
+      await onSubmit({
+        title,
+        amount,
+        purchase_date: purchaseDate,
+        category,
+        merchant,
+        notes,
+        is_recurring: isRecurring,
+      });
       setTitle("");
       setAmount("");
+      setPurchaseDate(new Date().toISOString().slice(0, 10));
+      setCategory("");
+      setMerchant("");
+      setNotes("");
+      setIsRecurring(false);
     } finally {
       setIsSubmitting(false);
     }
@@ -48,6 +68,55 @@ export function ExpenseForm({ onSubmit }: ExpenseFormProps) {
           onChange={(event) => setAmount(event.target.value)}
           placeholder="4.50"
         />
+      </label>
+
+      <label>
+        Purchase date
+        <input
+          required
+          type="date"
+          value={purchaseDate}
+          onChange={(event) => setPurchaseDate(event.target.value)}
+        />
+      </label>
+
+      <label>
+        Category
+        <input
+          required
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+          placeholder="Food"
+        />
+      </label>
+
+      <label>
+        Merchant or vendor
+        <input
+          required
+          value={merchant}
+          onChange={(event) => setMerchant(event.target.value)}
+          placeholder="Cafe Central"
+        />
+      </label>
+
+      <label>
+        Notes
+        <textarea
+          rows={3}
+          value={notes}
+          onChange={(event) => setNotes(event.target.value)}
+          placeholder="Optional notes"
+        />
+      </label>
+
+      <label className="checkbox-field">
+        <input
+          type="checkbox"
+          checked={isRecurring}
+          onChange={(event) => setIsRecurring(event.target.checked)}
+        />
+        Is recurring
       </label>
 
       <button type="submit" disabled={isSubmitting}>

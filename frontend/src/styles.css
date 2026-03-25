@@ -18,7 +18,8 @@ body {
 }
 
 button,
-input {
+input,
+textarea {
   font: inherit;
 }
 
@@ -87,6 +88,15 @@ input {
   border: 1px solid #cad4e4;
   border-radius: 12px;
   background: #fff;
+}
+
+.form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #cad4e4;
+  border-radius: 12px;
+  background: #fff;
+  resize: vertical;
 }
 
 .form button {
@@ -162,12 +172,25 @@ input {
   gap: 8px;
 }
 
-.expense-edit-form input {
+.expense-edit-form input,
+.expense-edit-form textarea {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid #cad4e4;
   border-radius: 10px;
   background: #fff;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.checkbox-field input {
+  width: auto;
+  margin: 0;
 }
 
 .message {

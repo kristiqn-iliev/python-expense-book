@@ -2,17 +2,32 @@ export interface Expense {
   id: number;
   title: string;
   amount: string;
+  purchase_date: string;
+  category: string;
+  merchant: string;
+  notes: string;
+  is_recurring: boolean;
   created_at: string;
 }
 
 export interface CreateExpenseInput {
   title: string;
   amount: string;
+  purchase_date: string;
+  category: string;
+  merchant: string;
+  notes: string;
+  is_recurring: boolean;
 }
 
 export interface UpdateExpenseInput {
   title?: string;
   amount?: string;
+  purchase_date?: string;
+  category?: string;
+  merchant?: string;
+  notes?: string;
+  is_recurring?: boolean;
 }
 
 const API_BASE_URL =
@@ -53,5 +68,5 @@ export const expenseApi = {
     request<Expense>(`/expenses/${expenseId}`, {
       method: "PATCH",
       body: JSON.stringify(payload),
-    })
+    }),
 };

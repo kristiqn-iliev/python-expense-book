@@ -12,7 +12,15 @@ class ExpenseRepository:
         self.db = db
 
     def create(self, payload: ExpenseCreate) -> Expense:
-        expense = Expense(title=payload.title, amount=payload.amount)
+        expense = Expense(
+            title=payload.title,
+            amount=payload.amount,
+            purchase_date=payload.purchase_date,
+            category=payload.category,
+            merchant=payload.merchant,
+            notes=payload.notes,
+            is_recurring=payload.is_recurring,
+        )
         self.db.add(expense)
         self.db.commit()
         self.db.refresh(expense)
