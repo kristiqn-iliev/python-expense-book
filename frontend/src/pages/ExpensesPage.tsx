@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { CreateExpenseInput, Expense, expenseApi } from "../api/client";
+import { CreateExpenseInput, Expense, expenseApi, UpdateExpenseInput } from "../api/client";
 import { ExpenseForm } from "../components/ExpenseForm";
 import { ExpenseList } from "../components/ExpenseList";
 
@@ -45,6 +45,17 @@ export function ExpensesPage() {
     }
   }
 
+  async function handleUpdateExpense(expenseId: number, payload: UpdateExpenseInput) {
+    try {
+      setError(null);
+      await expenseApi.edit(expenseId, payload);
+      await loadExpenses();
+    } catch (requestError) {
+      setError("Could not update the expense.");
+      console.error(requestError)
+    }
+  }
+
   useEffect(() => {
     void loadExpenses();
   }, []);
@@ -65,7 +76,9 @@ export function ExpensesPage() {
 
       <div className="content-grid">
         <ExpenseForm onSubmit={handleCreateExpense} />
-        <ExpenseList expenses={expenses} onDelete={handleDeleteExpense} />
+        <ExpenseList expenses={expenses}
+          onDelete={handleDeleteExpense}
+          onEdit={handleUpdateExpense} />
       </div>
     </main>
   );

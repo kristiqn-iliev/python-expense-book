@@ -138,6 +138,38 @@ input {
   color: #62728a;
 }
 
+.expense-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.expense-actions button {
+  padding: 8px 12px;
+  border: 1px solid #cad4e4;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.expense-actions button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.expense-edit-form {
+  display: grid;
+  gap: 8px;
+}
+
+.expense-edit-form input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cad4e4;
+  border-radius: 10px;
+  background: #fff;
+}
+
 .message {
   margin-bottom: 16px;
 }

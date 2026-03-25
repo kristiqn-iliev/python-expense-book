@@ -10,6 +10,11 @@ export interface CreateExpenseInput {
   amount: string;
 }
 
+export interface UpdateExpenseInput {
+  title?: string;
+  amount?: string;
+}
+
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000/api/v1";
 
@@ -44,4 +49,9 @@ export const expenseApi = {
     request<void>(`/expenses/${expenseId}`, {
       method: "DELETE",
     }),
+  edit: (expenseId: number, payload: UpdateExpenseInput) =>
+    request<Expense>(`/expenses/${expenseId}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    })
 };
