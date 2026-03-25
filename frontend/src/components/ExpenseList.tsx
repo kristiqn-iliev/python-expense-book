@@ -230,7 +230,7 @@ export function ExpenseList({ expenses, onDelete, onEdit }: ExpenseListProps) {
                   </>
                 )}
               </div>
-              <span>${expense.amount}</span>
+              <span>EUR {expense.amount}</span>
             </li>
           ))}
         </ul>
