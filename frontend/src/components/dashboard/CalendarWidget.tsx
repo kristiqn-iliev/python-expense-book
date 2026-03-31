@@ -6,6 +6,8 @@ interface CalendarWidgetProps {
   expenses: Expense[];
   onDeleteExpense: (expenseId: number) => Promise<void>;
   onEditExpense: (expenseId: number, payload: UpdateExpenseInput) => Promise<void>;
+  isExpanded: boolean;
+  onToggleExpanded: () => void;
 }
 
 interface ExpenseDraft {
@@ -119,6 +121,8 @@ export default function CalendarWidget({
   expenses,
   onDeleteExpense,
   onEditExpense,
+  isExpanded,
+  onToggleExpanded,
 }: CalendarWidgetProps) {
   const [visibleMonth, setVisibleMonth] = useState(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -186,12 +190,20 @@ export default function CalendarWidget({
 
   return (
     <>
-      <section className="dashboard-card calendar-card">
+      <section className={`dashboard-card calendar-card${isExpanded ? " calendar-card--expanded" : ""}`}>
         <div className="dashboard-card-header">
           <h2>
             {visibleMonth.toLocaleDateString(undefined, { month: "long", year: "numeric" })}
           </h2>
           <div className="calendar-nav-buttons">
+            <button
+              type="button"
+              onClick={onToggleExpanded}
+              aria-label={isExpanded ? "Shrink calendar" : "Expand calendar"}
+              title={isExpanded ? "Shrink calendar" : "Expand calendar"}
+            >
+              {isExpanded ? "⤡" : "⤢"}
+            </button>
             <button type="button" onClick={() => setVisibleMonth((current) => addMonths(current, -1))}>
               &lt;
             </button>
@@ -207,7 +219,7 @@ export default function CalendarWidget({
           ))}
         </div>
 
-        <div className="calendar-grid-widget">
+        <div className={`calendar-grid-widget${isExpanded ? " calendar-grid-widget--expanded" : ""}`}>
           {calendarDays.map((day) => {
             const hasExpense = day.totalAmount > 0;
             const intensity = maxMonthTotal > 0 ? day.totalAmount / maxMonthTotal : 0;

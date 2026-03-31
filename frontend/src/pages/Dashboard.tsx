@@ -17,6 +17,7 @@ export default function Dashboard() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isCalendarExpanded, setIsCalendarExpanded] = useState(false);
 
   async function loadExpenses() {
     try {
@@ -80,21 +81,27 @@ export default function Dashboard() {
           {error ? <p className="dashboard-message dashboard-message--error">{error}</p> : null}
           {isLoading ? <p className="dashboard-message">Loading expenses...</p> : null}
 
-          <div className="dashboard-grid">
-            <section className="dashboard-primary-column">
+          <div className={`dashboard-grid${isCalendarExpanded ? " dashboard-grid--calendar-focus" : ""}`}>
+            <section
+              className={`dashboard-primary-column${isCalendarExpanded ? " dashboard-primary-column--hidden" : ""}`}
+            >
               <StatisticCards />
               <ScheduleGrid onSubmitExpense={handleCreateExpense} />
-              <UpcomingAppointments />
+              <UpcomingAppointments expenses={expenses} />
             </section>
 
-            <aside className="dashboard-secondary-column">
+            <aside
+              className={`dashboard-secondary-column${isCalendarExpanded ? " dashboard-secondary-column--expanded" : ""}`}
+            >
               <CalendarWidget
                 expenses={expenses}
                 onDeleteExpense={handleDeleteExpense}
                 onEditExpense={handleUpdateExpense}
+                isExpanded={isCalendarExpanded}
+                onToggleExpanded={() => setIsCalendarExpanded((current) => !current)}
               />
-              <ActivityWidget />
-              <NotificationsWidget />
+              {isCalendarExpanded ? null : <ActivityWidget />}
+              {isCalendarExpanded ? null : <NotificationsWidget />}
             </aside>
           </div>
         </main>
