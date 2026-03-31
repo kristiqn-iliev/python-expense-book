@@ -1,4 +1,13 @@
 import { ChangeEvent, useMemo, useState } from "react";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import { Expense } from "../../api/client";
 
@@ -130,21 +139,16 @@ function buildSeries(expenses: Expense[], range: AnalyticsRange): DataPoint[] {
   });
 }
 
-function buildPath(points: number[], width: number, height: number) {
-  if (points.length === 0) {
-    return "";
+function rangeCaption(range: AnalyticsRange) {
+  if (range === "day") {
+    return "Last 14 days";
   }
 
-  const max = Math.max(...points, 1);
-  const stepX = points.length > 1 ? width / (points.length - 1) : width;
+  if (range === "month") {
+    return "Last 12 months";
+  }
 
-  return points
-    .map((amount, index) => {
-      const x = index * stepX;
-      const y = height - (amount / max) * height;
-      return `${index === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`;
-    })
-    .join(" ");
+  return "Last 6 years";
 }
 
 export default function UpcomingAppointments({ expenses }: UpcomingAppointmentsProps) {
@@ -155,12 +159,15 @@ export default function UpcomingAppointments({ expenses }: UpcomingAppointmentsP
   const maxValue = Math.max(...values, 1);
   const total = values.reduce((sum, value) => sum + value, 0);
   const activePoints = values.filter((value) => value > 0).length;
-  const path = buildPath(values, 100, 52);
+  const average = series.length > 0 ? total / series.length : 0;
 
   return (
     <section className="dashboard-card analytics-card">
       <div className="dashboard-card-header">
-        <h2>Analytics</h2>
+        <div>
+          <h2>Analytics</h2>
+          <p className="analytics-subtitle">{rangeCaption(range)}</p>
+        </div>
         <select
           className="analytics-select"
           value={range}
@@ -182,7 +189,11 @@ export default function UpcomingAppointments({ expenses }: UpcomingAppointmentsP
             <strong>{formatCurrency(total)}</strong>
           </article>
           <article>
-            <span>Peak</span>
+            <span>Average period</span>
+            <strong>{formatCurrency(average)}</strong>
+          </article>
+          <article>
+            <span>Peak period</span>
             <strong>{formatCurrency(maxValue)}</strong>
           </article>
           <article>
@@ -191,45 +202,61 @@ export default function UpcomingAppointments({ expenses }: UpcomingAppointmentsP
           </article>
         </div>
 
-        <div className="analytics-chart-card">
-          <div className="analytics-chart-scale">
-            <span>{formatCurrency(maxValue)}</span>
-            <span>{formatCurrency(maxValue / 2)}</span>
-            <span>{formatCurrency(0)}</span>
-          </div>
-
-          <div className="analytics-chart">
-            <svg viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true">
-              <path
-                d={`M 0 60 ${path} L 100 60 Z`}
-                className="analytics-area-path"
+        <div className="analytics-chart-shell">
+          <ResponsiveContainer width="100%" height={280}>
+            <AreaChart data={series} margin={{ top: 12, right: 16, left: -18, bottom: 8 }}>
+              <defs>
+                <linearGradient id="expenseAreaFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#24c8ec" stopOpacity={0.32} />
+                  <stop offset="95%" stopColor="#24c8ec" stopOpacity={0.04} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid stroke="rgba(220, 228, 238, 0.9)" strokeDasharray="4 4" vertical={false} />
+              <XAxis
+                dataKey="label"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: "#95a0b1", fontSize: 12 }}
+                dy={8}
               />
-              <path d={path} className="analytics-line-path" />
-              {values.map((amount, index) => {
-                const x = values.length > 1 ? (index / (values.length - 1)) * 100 : 50;
-                const y = 52 - (amount / maxValue) * 52;
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: "#95a0b1", fontSize: 12 }}
+                tickFormatter={(value: number) => formatCurrency(value)}
+                width={78}
+              />
+              <Tooltip
+                cursor={{ stroke: "rgba(36, 200, 236, 0.35)", strokeWidth: 1 }}
+                contentStyle={{
+                  border: "1px solid rgba(223, 231, 241, 0.95)",
+                  borderRadius: "16px",
+                  boxShadow: "0 14px 36px rgba(20, 30, 48, 0.12)",
+                  backgroundColor: "rgba(255, 255, 255, 0.98)",
+                }}
+                formatter={(value) => [formatCurrency(Number(value ?? 0)), "Spend"]}
+                labelStyle={{ color: "#2c3950", fontWeight: 600 }}
+              />
+              <Area
+                type="monotone"
+                dataKey="amount"
+                stroke="#24c8ec"
+                strokeWidth={3}
+                fill="url(#expenseAreaFill)"
+                activeDot={{ r: 5, strokeWidth: 0, fill: "#1598bf" }}
+                dot={{ r: 2.5, strokeWidth: 0, fill: "#24c8ec" }}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
 
-                return (
-                  <circle
-                    key={`${series[index].label}-${index}`}
-                    cx={x}
-                    cy={Number.isFinite(y) ? y : 52}
-                    r={amount > 0 ? 1.6 : 1.1}
-                    className={amount > 0 ? "analytics-point analytics-point--active" : "analytics-point"}
-                  />
-                );
-              })}
-            </svg>
-          </div>
-
-          <div className="analytics-labels">
-            {series.map((point) => (
-              <div key={point.label} className="analytics-label-item">
-                <strong>{point.amount > 0 ? formatCurrency(point.amount) : "·"}</strong>
-                <span>{point.label}</span>
-              </div>
-            ))}
-          </div>
+        <div className="analytics-footer">
+          {series.slice(-4).map((point) => (
+            <div key={point.label} className="analytics-footer-item">
+              <span>{point.label}</span>
+              <strong>{point.amount > 0 ? formatCurrency(point.amount) : "No spend"}</strong>
+            </div>
+          ))}
         </div>
       </div>
     </section>

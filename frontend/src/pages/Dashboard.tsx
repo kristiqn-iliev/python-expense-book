@@ -85,9 +85,9 @@ export default function Dashboard() {
             <section
               className={`dashboard-primary-column${isCalendarExpanded ? " dashboard-primary-column--hidden" : ""}`}
             >
-              <StatisticCards expenses={expenses} />
               <ScheduleGrid onSubmitExpense={handleCreateExpense} />
               <UpcomingAppointments expenses={expenses} />
+              <StatisticCards expenses={expenses} />
             </section>
 
             <aside

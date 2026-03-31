@@ -417,7 +417,7 @@ export default function CalendarWidget({
                   />
                 </label>
 
-                <label>
+                <label className="expense-form-grid__full">
                   Notes
                   <textarea
                     rows={3}

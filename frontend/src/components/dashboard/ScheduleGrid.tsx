@@ -13,8 +13,6 @@ export default function ScheduleGrid({ onSubmitExpense }: ScheduleGridProps) {
     new Date().toISOString().slice(0, 10),
   );
   const [category, setCategory] = useState("");
-  const [merchant, setMerchant] = useState("");
-  const [notes, setNotes] = useState("");
   const [isRecurring, setIsRecurring] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -28,8 +26,8 @@ export default function ScheduleGrid({ onSubmitExpense }: ScheduleGridProps) {
         amount,
         purchase_date: purchaseDate,
         category,
-        merchant,
-        notes,
+        merchant: "",
+        notes: "",
         is_recurring: isRecurring,
       });
 
@@ -37,8 +35,6 @@ export default function ScheduleGrid({ onSubmitExpense }: ScheduleGridProps) {
       setAmount("");
       setPurchaseDate(new Date().toISOString().slice(0, 10));
       setCategory("");
-      setMerchant("");
-      setNotes("");
       setIsRecurring(false);
     } finally {
       setIsSubmitting(false);
@@ -96,26 +92,6 @@ export default function ScheduleGrid({ onSubmitExpense }: ScheduleGridProps) {
               value={category}
               onChange={(event) => setCategory(event.target.value)}
               placeholder="Food"
-            />
-          </label>
-
-          <label>
-            Merchant or vendor
-            <input
-              required
-              value={merchant}
-              onChange={(event) => setMerchant(event.target.value)}
-              placeholder="Cafe Central"
-            />
-          </label>
-
-          <label>
-            Notes
-            <textarea
-              rows={3}
-              value={notes}
-              onChange={(event) => setNotes(event.target.value)}
-              placeholder="Optional notes"
             />
           </label>
         </div>
