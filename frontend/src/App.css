@@ -5,7 +5,7 @@
 :root {
   color: #172033;
   background:
-    radial-gradient(circle at bottom left, rgba(197, 240, 251, 0.96) 0%, rgba(245, 247, 252, 0.9) 38%, rgba(249, 230, 243, 0.96) 100%);
+    radial-gradient(circle at top left, rgba(214, 238, 250, 0.98) 0%, rgba(243, 247, 251, 0.96) 34%, rgba(233, 239, 245, 0.98) 100%);
   font-family: "Manrope", "Segoe UI", sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -121,6 +121,31 @@ textarea {
   bottom: 2px;
   width: 2px;
   transform: translateX(-50%);
+}
+
+.dashboard-sidebar-icon--logout {
+  border-radius: 4px;
+}
+
+.dashboard-sidebar-icon--logout::before {
+  left: 3px;
+  right: 6px;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+.dashboard-sidebar-icon--logout::after {
+  left: auto;
+  right: 1px;
+  top: 4px;
+  bottom: auto;
+  width: 8px;
+  height: 8px;
+  background: transparent;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: rotate(45deg);
 }
 
 .dashboard-layout {

@@ -12,7 +12,6 @@ import UpcomingAppointments from "../components/dashboard/UpcomingAppointments";
 import { dashboardApi } from "../services/api";
 
 export default function Dashboard() {
-  const [activeNav, setActiveNav] = useState("dashboard");
   const [searchValue, setSearchValue] = useState("");
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -72,7 +71,7 @@ export default function Dashboard() {
 
   return (
     <div className="app-shell">
-      <Sidebar activeItem={activeNav} onNavigate={setActiveNav} />
+      <Sidebar />
 
       <div className="dashboard-layout">
         <Header searchValue={searchValue} onSearchChange={setSearchValue} />
