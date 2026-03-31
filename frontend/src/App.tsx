@@ -1,5 +1,7 @@
-import { ExpensesPage } from "./pages/ExpensesPage";
+import "./App.css";
+
+import Dashboard from "./pages/Dashboard";
 
 export default function App() {
-  return <ExpensesPage />;
+  return <Dashboard />;
 }
