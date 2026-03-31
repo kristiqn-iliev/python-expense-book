@@ -15,6 +15,7 @@ export default function ScheduleGrid({ onSubmitExpense }: ScheduleGridProps) {
   const [category, setCategory] = useState("");
   const [isRecurring, setIsRecurring] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -42,15 +43,22 @@ export default function ScheduleGrid({ onSubmitExpense }: ScheduleGridProps) {
   }
 
   return (
-    <section className="dashboard-card">
+    <section className={`dashboard-card expense-card${isCollapsed ? " expense-card--collapsed" : ""}`}>
       <div className="dashboard-card-header">
         <h2>Add Expense</h2>
-        <button type="button" className="dashboard-more-button" aria-label="More options">
+        <button
+          type="button"
+          className="dashboard-more-button expense-card-toggle"
+          aria-label={isCollapsed ? "Expand add expense form" : "Collapse add expense form"}
+          aria-expanded={!isCollapsed}
+          onClick={() => setIsCollapsed((current) => !current)}
+        >
           ...
         </button>
       </div>
 
-      <form className="expense-form-card" onSubmit={handleSubmit}>
+      {isCollapsed ? null : (
+        <form className="expense-form-card" onSubmit={handleSubmit}>
         <div className="expense-form-grid">
           <label>
             Title
@@ -108,7 +116,8 @@ export default function ScheduleGrid({ onSubmitExpense }: ScheduleGridProps) {
         <button type="submit" className="expense-submit-button" disabled={isSubmitting}>
           {isSubmitting ? "Saving..." : "Save expense"}
         </button>
-      </form>
+        </form>
+      )}
     </section>
   );
 }

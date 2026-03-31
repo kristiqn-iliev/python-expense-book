@@ -100,7 +100,7 @@ export default function Dashboard() {
                 isExpanded={isCalendarExpanded}
                 onToggleExpanded={() => setIsCalendarExpanded((current) => !current)}
               />
-              {isCalendarExpanded ? null : <ActivityWidget />}
+              {isCalendarExpanded ? null : <ActivityWidget expenses={expenses} />}
               {isCalendarExpanded ? null : <NotificationsWidget />}
             </aside>
           </div>

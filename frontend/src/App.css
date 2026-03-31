@@ -446,6 +446,25 @@ textarea {
   cursor: pointer;
 }
 
+.expense-card {
+  transition: padding 160ms ease, box-shadow 160ms ease;
+}
+
+.expense-card--collapsed {
+  padding-bottom: 20px;
+}
+
+.expense-card-toggle {
+  min-width: 42px;
+  min-height: 38px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 2px solid #1d6ddd;
+  color: #1d6ddd;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .appointments-avatar {
   width: 34px;
   height: 34px;
@@ -779,15 +798,97 @@ textarea {
 }
 
 .activity-card {
-  text-align: center;
+  padding: 22px 24px;
 }
 
-.activity-value {
-  display: grid;
+.activity-subtitle {
+  margin: 4px 0 0;
+  color: #8c97aa;
+  font-size: 0.88rem;
+}
+
+.activity-window-tag {
+  display: inline-grid;
   place-items: center;
-  min-height: 186px;
-  font-size: 3.8rem;
-  font-weight: 800;
+  min-width: 54px;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #f4f8fc;
+  color: #627088;
+  font-weight: 700;
+}
+
+.activity-forecast {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 18px;
+}
+
+.activity-forecast-value {
+  font-size: 2.7rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.activity-forecast-copy {
+  margin: 0;
+  color: #7e8ba0;
+}
+
+.activity-slider-block {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.activity-slider-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4e5a6d;
+}
+
+.activity-slider {
+  width: 100%;
+  accent-color: #24c8ec;
+}
+
+.activity-slider-scale {
+  display: flex;
+  justify-content: space-between;
+  color: #94a0b2;
+  font-size: 0.8rem;
+}
+
+.activity-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.activity-metrics article {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.activity-metrics span {
+  color: #8d98aa;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.activity-metrics strong {
+  font-size: 1.05rem;
+}
+
+.activity-metrics p {
+  margin: 0;
+  color: #76849a;
+  font-size: 0.85rem;
 }
 
 .notifications-list {
@@ -849,5 +950,9 @@ textarea {
   .analytics-chart-shell {
     min-height: 240px;
     padding: 10px;
+  }
+
+  .activity-metrics {
+    grid-template-columns: 1fr;
   }
 }
